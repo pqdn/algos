@@ -11,28 +11,25 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public abstract class ASortTest<T extends ASort> {
+public abstract class ISortTest<T extends ISort> {
     private Class<T> aClass;
     private T sortAlgorithm;
 
-    public ASortTest() {
+    public ISortTest() {
         aClass = Optional.of(getClass())
                 .map(Class::getGenericSuperclass)
                 .filter(el -> el instanceof ParameterizedType)
-                .filter(el -> ((ParameterizedType) el).getActualTypeArguments().length > 0)
-                .map(el -> ((ParameterizedType) el).getActualTypeArguments()[0])
+                .map( el -> (ParameterizedType) el)
+                .filter(el -> el.getActualTypeArguments().length > 0)
+                .map(el -> el.getActualTypeArguments()[0])
                 .filter(el -> el instanceof Class)
                 .map(el -> (Class<T>) el)
                 .orElse(null);
     }
 
     @BeforeEach
-    public void init() {
-        try {
-            sortAlgorithm = aClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+    void init() throws IllegalAccessException, InstantiationException {
+        sortAlgorithm = aClass.newInstance();
     }
 
     @Test

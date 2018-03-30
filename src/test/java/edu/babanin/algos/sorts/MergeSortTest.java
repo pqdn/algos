@@ -1,5 +1,5 @@
 package edu.babanin.algos.sorts;
 
-class MergeSortTest extends ASortTest<MergeSort> {
+class MergeSortTest extends ISortTest<MergeSort> {
 
 }
