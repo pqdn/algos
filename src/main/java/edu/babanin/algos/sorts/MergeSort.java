@@ -8,7 +8,6 @@ import java.util.Arrays;
 public class MergeSort extends AbstractSort {
     private final int minBlockSize  = 16;
 
-
     @Override
     public int[] sort(int[] ints) {
         int[] ints1 = Arrays.copyOf(ints, ints.length);
