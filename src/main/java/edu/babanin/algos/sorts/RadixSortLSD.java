@@ -3,33 +3,35 @@ package edu.babanin.algos.sorts;
 import java.util.Arrays;
 
 /**
- * Расчитан на сортировку только положительных чисел
- *
- * Скорость работы зависит от разрядности MAX(inputArray) во входной последовательности
+ * Если числа только положительные, то
+ * скорость работы зависит от разрядности MAX(inputArray) во входной последовательности
  */
 public class RadixSortLSD extends AbstractSort {
     private final int maxNumInCategoty = 0xf;
     private final int systemNum = maxNumInCategoty + 1;
     private final int shift;
     {
-        int tmp = 0;
+        int _shift = 0;
         for (int i = 0; i < 32; i++) {
             int num = maxNumInCategoty & (1 << i);
             if (num != 0) {
-                tmp++;
+                _shift++;
             } else {
                 break;
             }
         }
-        shift = tmp;
+        shift = _shift;
     }
 
     @Override
     public int[] sort(int[] ints) {
         int[] arr = Arrays.copyOf(ints, ints.length);
         int[] buf = new int[ints.length];
+
+
+        int min = findMin(arr);
         int max = findMax(arr);
-        int cap = calcCapacity(max);
+        int cap = calcCapacity(Math.max(Math.abs(min), max));
 
         for (int i = 0; i < cap; i++) {
             int[] indexes = calcIndexes(arr, i);
@@ -44,8 +46,25 @@ public class RadixSortLSD extends AbstractSort {
             buf = tmp;
         }
 
+        if(min < 0){
+            int i = findFirstNegotive(arr);
+            arraycopy(arr, i, buf, 0, arr.length - i);
+            arraycopy(arr, 0, buf, arr.length - i, i);
+            arr = buf;
+        }
+
         return arr;
     }
+
+    private int findFirstNegotive(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] < 0) {
+                return i;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
 
     private int[] calcIndexes(int[] arr, int index) {
         int[] indexes = new int[systemNum];
@@ -66,7 +85,8 @@ public class RadixSortLSD extends AbstractSort {
 
     private int getNumOnPosition(int value, int index){
         value = value & (maxNumInCategoty << (index * shift));
-        return value >> (index * shift);
+        value = value >>> (index * shift);
+        return value;
     }
 
     private int calcCapacity(int number) {
@@ -90,4 +110,15 @@ public class RadixSortLSD extends AbstractSort {
         }
         return max;
     }
+
+    private int findMin(int[] arr) {
+        int min = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if(arr[i] < min){
+                min = arr[i];
+            }
+        }
+        return min;
+    }
+
 }

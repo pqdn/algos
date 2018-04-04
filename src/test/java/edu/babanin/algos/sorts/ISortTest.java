@@ -35,8 +35,8 @@ public abstract class ISortTest<T extends ISort> {
     @Test
     void sortTest() {
         assertNotNull(sortAlgorithm);
-        int n = sortAlgorithm.isSimple() ? 32 : 1_000_000;
-        int[] ints = new Random(1).ints(n, 0, 99).toArray();
+        int n = sortAlgorithm.isSimple() ? 32 : 10_000;
+        int[] ints = new Random(1).ints(n, -99, 99).toArray();
         int[] sortInts = Arrays.stream(ints)
                 .sorted()
                 .toArray();
