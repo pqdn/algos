@@ -6,7 +6,6 @@ import java.util.Arrays;
  * down to top
  */
 public class MergeSort2 extends AbstractSort {
-    private final int minBlockSize  = 16;
 
     @Override
     public int[] sort(int[] ints) {

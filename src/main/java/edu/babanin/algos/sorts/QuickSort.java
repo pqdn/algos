@@ -5,13 +5,17 @@ import java.util.Random;
 
 public class QuickSort extends AbstractSort {
     private Random random = new Random();
-    private final int minBlockSize  = 16;
 
     @Override
     public int[] sort(int[] ints) {
         int[] arr = Arrays.copyOf(ints, ints.length);
-        quick(arr, 0, arr.length);
+        sortInPlace(arr);
         return arr;
+    }
+
+    @Override
+    public void sortInPlace(int[] arr) {
+        quick(arr, 0, arr.length);
     }
 
     private void quick(int[] arr, int start, int end) {
